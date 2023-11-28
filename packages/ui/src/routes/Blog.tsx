@@ -1,7 +1,4 @@
-"use server";
-import { renderToReadableStream } from "react-dom/server";
-
-const App = () => {
+export const Blog = async () => {
   return (
     <div className="content">
       <h1>Blog</h1>
@@ -9,4 +6,3 @@ const App = () => {
     </div>
   );
 };
-export default await renderToReadableStream(<App />);

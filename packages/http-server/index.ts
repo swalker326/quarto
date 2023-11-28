@@ -1,15 +1,28 @@
-import { default as Home } from "@quarto/ui/routes/Home.tsx";
-import { default as Blog } from "@quarto/ui/routes/Blog.tsx";
+import { Home } from "@quarto/ui/routes/Home.tsx";
+import { Blog } from "@quarto/ui/routes/Blog.tsx";
+import { renderToReadableStream } from "react-dom/server";
+import { prisma } from "@quarto/db";
 
 Bun.serve({
   port: 3005,
-  fetch(req) {
+  development: true,
+  error: (err) => {
+    console.error(err);
+    return new Response(err.message, { status: 500 });
+  },
+  async fetch(req) {
     const url = new URL(req.url);
-    console.log("PATH: ", url.pathname);
-    if (url.pathname.endsWith("/")) return new Response(Home);
-    if (url.pathname.endsWith("/blog")) return new Response(Blog);
-    //wtf is up with this favicon.ico request that happens on every page load?
-    if (url.pathname.endsWith("/favicon.ico")) return new Response("");
+    console.log("HOME: ", Home);
+    if (url.pathname.endsWith("/")) {
+      const component = await Home();
+      const stream = await renderToReadableStream(component);
+      return new Response(stream);
+    }
+    if (url.pathname.endsWith("/blog")) {
+      const component = await Blog();
+      const stream = await renderToReadableStream(component);
+      return new Response(stream);
+    }
 
     // all other routes
     return new Response("Hello!");
