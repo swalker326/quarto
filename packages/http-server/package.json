@@ -2,6 +2,9 @@
   "name": "@quarto/http-server",
   "module": "index.ts",
   "type": "module",
+  "entrypoints": [
+    "index.ts"
+  ],
   "scripts": {
     "dev": "bun --watch index.ts"
   },
@@ -16,6 +19,7 @@
     "@stricjs/utils": "^1.6.1",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "chokidar": "^3.5.3",
     "fastify": "^4.24.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
